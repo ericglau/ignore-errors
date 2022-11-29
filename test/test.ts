@@ -10,6 +10,13 @@ describe("MyContract", function () {
     await instance.deployed();
   });
 
+  it("Test SafeContractWithFreeFunctionCall", async function () {
+    const ContractFactory = await ethers.getContractFactory("SafeContractWithFreeFunctionCall");
+
+    const instance = await upgrades.deployProxy(ContractFactory);
+    await instance.deployed();
+  });
+
   it("Test SafeContractWithLibraryCall", async function () {
     const ContractFactory = await ethers.getContractFactory("SafeContractWithLibraryCall");
 
@@ -31,53 +38,45 @@ describe("MyContract", function () {
     await instance.deployed();
   });
 
+  it("Test UnsafeContract", async function () {
+    const ContractFactory = await ethers.getContractFactory("UnsafeContract");
+
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
+  });
+
+  it("Test UnsafeContractWithFreeFunctionCall", async function () {
+    const ContractFactory = await ethers.getContractFactory("UnsafeContractWithFreeFunctionCall");
+
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
+  });
+
   it("Test UnsafeContractWithLibraryCall", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithLibraryCall");
 
-    try {
-      await upgrades.deployProxy(ContractFactory);
-    } catch (e: any) {
-      expect(e.message).to.include('Use of delegatecall is not allowed');
-    }
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
 
   it("Test UnsafeContractWithParentCall", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithParentCall");
 
-    try {
-      await upgrades.deployProxy(ContractFactory);
-    } catch (e: any) {
-      expect(e.message).to.include('Use of delegatecall is not allowed');
-    }
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
 
   it("Test UnsafeContractWithTransitiveLibraryCall", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithTransitiveLibraryCall");
 
-    try {
-      await upgrades.deployProxy(ContractFactory);
-    } catch (e: any) {
-      expect(e.message).to.include('Use of delegatecall is not allowed');
-    }
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
 
   it("Test UnsafeContractWithInheritedParent", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithInheritedParent");
 
-    try {
-      await upgrades.deployProxy(ContractFactory);
-    } catch (e: any) {
-      expect(e.message).to.include('Use of delegatecall is not allowed');
-    }
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
 
   it("Test UnsafeContractWithInheritedTransitiveParent", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithInheritedTransitiveParent");
 
-    try {
-      await upgrades.deployProxy(ContractFactory);
-    } catch (e: any) {
-      expect(e.message).to.include('Use of delegatecall is not allowed');
-    }
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
 });
