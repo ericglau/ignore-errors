@@ -24,6 +24,20 @@ describe("MyContract", function () {
     await instance.deployed();
   });
 
+  it("Test SafeContractWithLibraryImport", async function () {
+    const ContractFactory = await ethers.getContractFactory("SafeContractWithLibraryImport");
+
+    const instance = await upgrades.deployProxy(ContractFactory);
+    await instance.deployed();
+  });
+
+  it("Test SafeContractWithLibraryUsingFor", async function () {
+    const ContractFactory = await ethers.getContractFactory("SafeContractWithLibraryUsingFor");
+
+    const instance = await upgrades.deployProxy(ContractFactory);
+    await instance.deployed();
+  });
+
   it("Test SafeContractWithParentCall", async function () {
     const ContractFactory = await ethers.getContractFactory("SafeContractWithParentCall");
 
@@ -52,6 +66,12 @@ describe("MyContract", function () {
 
   it("Test UnsafeContractWithLibraryCall", async function () {
     const ContractFactory = await ethers.getContractFactory("UnsafeContractWithLibraryCall");
+
+    await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
+  });
+
+  it("Test UnsafeContractWithLibraryUsingFor", async function () {
+    const ContractFactory = await ethers.getContractFactory("UnsafeContractWithLibraryUsingFor");
 
     await expect(upgrades.deployProxy(ContractFactory)).to.be.rejectedWith('Use of delegatecall is not allowed');
   });
